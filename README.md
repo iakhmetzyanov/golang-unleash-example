@@ -28,6 +28,9 @@ docker-compose down
 curl -H "Content-Type: application/json" -H "Authorization: some-secret" -X GET localhost:81
 ```
 ## Результат проверки 
-Ответы в консоли попеременно
+Ответы в консоли попеременно с localhost:81/1
 * Feature enabled
 * hello, world!
+Ответы в консоли попеременно с localhost:81/2
+* {"toggles":[]}
+* {"toggles":[{"name":"my_feature_name","enabled":true,"variant":{"name":"disabled","enabled":false}}]}
