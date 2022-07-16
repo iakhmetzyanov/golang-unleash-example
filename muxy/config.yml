@@ -1,0 +1,15 @@
+proxy:
+  - name: http_proxy
+    config:
+      ## Proxy host details
+      host: 0.0.0.0
+      protocol: http
+      port: 80
+
+      ## Proxy target details
+      proxy_host: gitlab
+      proxy_port: 80
+      proxy_protocol: http
+
+      ## Enable this to proxy targets we don't trust
+      insecure: true # allow insecure https

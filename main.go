@@ -13,8 +13,9 @@ type metricsInterface struct {
 
 func init() {
     unleash.Initialize(
-        unleash.WithUrl("http://myserver.ru/api/v4/feature_flags/unleash/2"),
-        unleash.WithInstanceId("1xkiGQRGYtvfE5vSzWvm"),
+//        unleash.WithUrl("http://myserver.ru/api/v4/feature_flags/unleash/2"),
+        unleash.WithUrl("http://myserver.ru/api/v4/feature_flags/unleash/34"),
+        unleash.WithInstanceId("PzS-XXZB4gVvsMHdECTD"),
         unleash.WithAppName("production"), // Set to the running environment of your application
         unleash.WithListener(&metricsInterface{}),
 		unleash.WithCustomHeaders(http.Header{"Authorization": {"some-secret"}}),

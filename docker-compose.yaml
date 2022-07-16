@@ -1,14 +1,18 @@
 version: "3.9"
-# Проверка командой
-# curl -H "Content-Type: application/json" -H "Authorization: some-secret" -X GET localhost:81
-# 
 services:
+  muxy:
+    image: mefellows/muxy:latest
+    volumes:
+      - ./muxy/config.yml:/opt/muxy/conf/config.yml
+    ports:
+      - 82:80
+
   nginx:
     image: nginx:latest
     volumes:
       - ./nginx/nginx-go.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - 81:80
+      - 80:80
 
   go:
     image: go-test:latest
@@ -21,20 +25,26 @@ services:
     image: unleashorg/unleash-proxy:latest
     environment:
       UNLEASH_PROXY_CLIENT_KEYS: "some-secret"
-      # Прописать в hosts 127.0.0.1 myserver.ru
-      # После запуска локально гитлаба, создать репу, содать feature flag
-      # my_feature_name
-      # Вытащить из меню Configure API_URL и InstanceID
-      # Создать Strategies 50% , Environments: * и production
-      UNLEASH_URL: "http://myserver.ru/api/v4/feature_flags/unleash/2"
+      UNLEASH_URL: "http://myserver.ru/api/v4/feature_flags/unleash/34"
       UNLEASH_API_TOKEN: "unleash"
-      UNLEASH_INSTANCE_ID: "1xkiGQRGYtvfE5vSzWvm"
+      UNLEASH_INSTANCE_ID: "PzS-XXZB4gVvsMHdECTD"
       UNLEASH_APP_NAME: "unleash-proxy"
     ports:
       - 3000:3000
 
+  unleash-proxy2:
+    image: unleashorg/unleash-proxy:latest
+    environment:
+      UNLEASH_PROXY_CLIENT_KEYS: "some-secret"
+      UNLEASH_URL: "http://myserver.ru/api/v4/feature_flags/unleash/2"
+      UNLEASH_API_TOKEN: "unleash"
+      UNLEASH_INSTANCE_ID: "PzS-XXZB4gVvsMHdECTD"
+      UNLEASH_APP_NAME: "unleash-proxy"
+    ports:
+      - 3001:3000
+
   gitlab:
-    image: gitlab/gitlab-ce:15.1.2-ce.0
+    image: gitlab/gitlab-ce:13.12.0-ce.0
     hostname: myserver.ru
     environment:
       GITLAB_HOME: /opt/gitlab
@@ -44,8 +54,19 @@ services:
        - gitlabdata:/opt/gitlab
        - gitlabdata2:/etc/gitlab
        - gitlabdata3:/var/opt/gitlab
-    ports:
-      - 80:80
+    shm_size: '256m'
+
+  gitlab2:
+    image: gitlab/gitlab-ce:15.1.2-ce.0
+    hostname: myserver2.ru
+    environment:
+      GITLAB_HOME: /opt/gitlab
+      GITLAB_OMNIBUS_CONFIG: "external_url 'http://myserver2.ru/'; gitlab_rails['initial_root_password'] = '12345678'"
+    volumes:
+       # Перед запуском создать именованные вольюмы
+       - gitlabdata4:/opt/gitlab
+       - gitlabdata5:/etc/gitlab
+       - gitlabdata6:/var/opt/gitlab
     shm_size: '256m'
 
 volumes:
@@ -54,4 +75,10 @@ volumes:
   gitlabdata2:
     external: true
   gitlabdata3:
+    external: true
+  gitlabdata4:
+    external: true
+  gitlabdata5:
+    external: true
+  gitlabdata6:
     external: true
