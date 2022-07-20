@@ -8,6 +8,8 @@
 docker volume create gitlabdata
 docker volume create gitlabdata2
 docker volume create gitlabdata3
+...
+docker volume create gitlabdata9
 ```
 * Прописать в hosts 127.0.0.1 **myserver.ru**
 * Возможно, потребуется перез запуском выкачать 
